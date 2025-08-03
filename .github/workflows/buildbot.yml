@@ -9,7 +9,7 @@ env:
 
 defaults:
   run:
-    shell: C:\Tools\msys64\msys2_shell.cmd -defterm -no-start -where . -full-path -shell bash.exe -Eeo pipefail -x '{0}'
+    shell: 'bash -Eeo pipefail -x {0}'
 
 jobs:
   # generic:
@@ -760,6 +760,10 @@ jobs:
         with:
           repository: nginx/nginx-tests
           path: nginx-tests
+
+      - name: Check shell
+        run: echo $0
+        shell: bash
 
       - name: Set MSYSTEM
         run: |
