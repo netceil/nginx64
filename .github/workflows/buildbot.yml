@@ -764,6 +764,7 @@ jobs:
       - name: Set MSYSTEM
         run: |
           echo MSYSTEM=MINGW64 >> $GITHUB_ENV
+        shell: bash
 
       - name: Set the defaults and set up environment
         run: |
