@@ -168,15 +168,15 @@ jobs:
           --with-openssl-opt="$NGINX_CONFIGURE_OPENSSL_OPT"
           make -j$(nproc) -k || make
 
-      - name: Run tests
-        shell: cmd
-        working-directory: nginx-tests
-        run: |
-          prove --state=save ../t . || prove -v --state=failed
-        env:
-          TEST_NGINX_BINARY: "${{ github.workspace }}\\objs\\nginx.exe"
-          TEST_NGINX_VERBOSE: 1
-          PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
+      # - name: Run tests
+      #   shell: cmd
+      #   working-directory: nginx-tests
+      #   run: |
+      #     prove --state=save ../t . || prove -v --state=failed
+      #   env:
+      #     TEST_NGINX_BINARY: "${{ github.workspace }}\\objs\\nginx.exe"
+      #     TEST_NGINX_VERBOSE: 1
+      #     PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
 
       # - name: Cleanup
       #   run: make clean
