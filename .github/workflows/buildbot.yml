@@ -9,7 +9,7 @@ env:
 
 defaults:
   run:
-    shell: 'bash -Eeo pipefail -x {0}'
+    shell: C:\Tools\msys64\msys2_shell.cmd -defterm -no-start -where . -full-path -shell bash.exe -Eeo pipefail -x '{0}'
 
 jobs:
   # generic:
@@ -764,7 +764,6 @@ jobs:
       - name: Set MSYSTEM
         run: |
           echo MSYSTEM=MINGW64 >> $GITHUB_ENV
-        shell: bash
 
       - name: Set the defaults and set up environment
         run: |
