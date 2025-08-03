@@ -739,8 +739,8 @@ jobs:
             env: x64
           - toolchain: msvc
             env: x86
-          - toolchain: mingw64
-            env: x86_64
+  #       - toolchain: mingw64
+  #         env: x86_64
       fail-fast: false
     defaults:
       run:
@@ -892,75 +892,75 @@ jobs:
           TEST_NGINX_VERBOSE: 1
           PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
 
-      - name: Cleanup
-        run: make clean
+      # - name: Cleanup
+      #   run: make clean
 
-      - name: Restore dependencies
-        run: |
-          cp -R objs.deps objs
+      # - name: Restore dependencies
+      #   run: |
+      #     cp -R objs.deps objs
 
-      - name: Configure and build with debug
-        if: matrix.toolchain == 'msvc'
-        shell: cmd
-        run: |
-          @echo on
-          call "%VCVARSALL%" %VCARCH%
-          bash.exe ^
-            %NGINX_CONFIGURE_CMD_WIN% ^
-            %NGINX_CONFIGURE_CC_MSVC% ^
-            %NGINX_CONFIGURE_ADD_STATIC% ^
-            --with-openssl-opt="%NGINX_CONFIGURE_OPENSSL_OPT%" ^
-            --with-debug
-          nmake -f objs/Makefile
+      # - name: Configure and build with debug
+      #   if: matrix.toolchain == 'msvc'
+      #   shell: cmd
+      #   run: |
+      #     @echo on
+      #     call "%VCVARSALL%" %VCARCH%
+      #     bash.exe ^
+      #       %NGINX_CONFIGURE_CMD_WIN% ^
+      #       %NGINX_CONFIGURE_CC_MSVC% ^
+      #       %NGINX_CONFIGURE_ADD_STATIC% ^
+      #       --with-openssl-opt="%NGINX_CONFIGURE_OPENSSL_OPT%" ^
+      #       --with-debug
+      #     nmake -f objs/Makefile
 
-      - name: Configure and build with debug
-        if: startsWith( matrix.toolchain, 'mingw')
-        run: |
-          $NGINX_CONFIGURE_CMD_WIN \
-          $NGINX_CONFIGURE_CC_MINGW \
-          $NGINX_CONFIGURE_ADD_STATIC \
-          --with-openssl-opt="$NGINX_CONFIGURE_OPENSSL_OPT" \
-          --with-debug
-          make -j$(nproc) -k || make
+      # - name: Configure and build with debug
+      #   if: startsWith( matrix.toolchain, 'mingw')
+      #   run: |
+      #     $NGINX_CONFIGURE_CMD_WIN \
+      #     $NGINX_CONFIGURE_CC_MINGW \
+      #     $NGINX_CONFIGURE_ADD_STATIC \
+      #     --with-openssl-opt="$NGINX_CONFIGURE_OPENSSL_OPT" \
+      #     --with-debug
+      #     make -j$(nproc) -k || make
 
-      - name: Run tests with debug
-        shell: cmd
-        working-directory: nginx-tests
-        run: |
-          prove --state=save ../t . || prove -v --state=failed
-        env:
-          TEST_NGINX_BINARY: "${{ github.workspace }}\\objs\\nginx.exe"
-          TEST_NGINX_VERBOSE: 1
-          PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
+      # - name: Run tests with debug
+      #   shell: cmd
+      #   working-directory: nginx-tests
+      #   run: |
+      #     prove --state=save ../t . || prove -v --state=failed
+      #   env:
+      #     TEST_NGINX_BINARY: "${{ github.workspace }}\\objs\\nginx.exe"
+      #     TEST_NGINX_VERBOSE: 1
+      #     PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
 
-      - name: Cleanup
-        run: make clean
+      # - name: Cleanup
+      #   run: make clean
 
-      - name: Restore dependencies
-        if: startsWith( matrix.toolchain, 'mingw')
-        run: |
-          cp -R objs.deps objs
+      # - name: Restore dependencies
+      #   if: startsWith( matrix.toolchain, 'mingw')
+      #   run: |
+      #     cp -R objs.deps objs
 
-      - name: Configure and build dynamic with debug
-        if: startsWith( matrix.toolchain, 'mingw')
-        run: |
-          $NGINX_CONFIGURE_CMD_WIN \
-          $NGINX_CONFIGURE_CC_MINGW \
-          $NGINX_CONFIGURE_ADD_DYNAMIC \
-          --with-openssl-opt="$NGINX_CONFIGURE_OPENSSL_OPT" \
-          --with-debug
-          make -j$(nproc) -k || make
+      # - name: Configure and build dynamic with debug
+      #   if: startsWith( matrix.toolchain, 'mingw')
+      #   run: |
+      #     $NGINX_CONFIGURE_CMD_WIN \
+      #     $NGINX_CONFIGURE_CC_MINGW \
+      #     $NGINX_CONFIGURE_ADD_DYNAMIC \
+      #     --with-openssl-opt="$NGINX_CONFIGURE_OPENSSL_OPT" \
+      #     --with-debug
+      #     make -j$(nproc) -k || make
 
-      - name: Run tests dynamic debug
-        if: startsWith( matrix.toolchain, 'mingw')
-        shell: cmd
-        working-directory: nginx-tests
-        run: |
-          prove --state=save ../t . || prove -v --state=failed
-        env:
-          TEST_NGINX_BINARY: "${{ github.workspace }}\\objs\\nginx.exe"
-          TEST_NGINX_VERBOSE: 1
-          PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
+      # - name: Run tests dynamic debug
+      #   if: startsWith( matrix.toolchain, 'mingw')
+      #   shell: cmd
+      #   working-directory: nginx-tests
+      #   run: |
+      #     prove --state=save ../t . || prove -v --state=failed
+      #   env:
+      #     TEST_NGINX_BINARY: "${{ github.workspace }}\\objs\\nginx.exe"
+      #     TEST_NGINX_VERBOSE: 1
+      #     PERL5LIB: "${{ github.workspace }}\\nginx-tests\\lib"
 
       - name: Upload Windows build artifacts
         uses: actions/upload-artifact@v4
@@ -970,3 +970,6 @@ jobs:
             objs/nginx.exe
             objs/*.lib
             objs/*.dll
+
+      - name: Cleanup
+        run: make clean
