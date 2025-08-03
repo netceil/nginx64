@@ -761,10 +761,6 @@ jobs:
           repository: nginx/nginx-tests
           path: nginx-tests
 
-      - name: Check shell
-        run: echo $0
-        shell: bash
-
       - name: Set MSYSTEM
         run: |
           echo MSYSTEM=MINGW64 >> $GITHUB_ENV
@@ -839,14 +835,14 @@ jobs:
           echo 'TMP=C:\TEMP' >> $GITHUB_ENV
           echo 'TMPDIR=C:\TEMP' >> $GITHUB_ENV
 
-          mkdir C:/TEMP/
-          mkdir C:/tmp/
+          mkdir -p C:/TEMP/
+          mkdir -p C:/tmp/
           mkdir -p t/
 
       - name: Download and unpack dependencies
         run: |
-          mkdir objs
-          mkdir objs/lib
+          mkdir -p objs
+          mkdir -p objs/lib
           curl -sLO https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${{ env.pcre2_ver }}/pcre2-${{ env.pcre2_ver }}.tar.gz
           tar -C objs/lib --transform 's/pcre2-${{ env.pcre2_ver }}/pcre/' -xzf ./pcre2-${{ env.pcre2_ver }}.tar.gz
           echo '#include <stdint.h>' > objs/lib/pcre/src/inttypes.h
